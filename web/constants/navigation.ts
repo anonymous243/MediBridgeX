@@ -6,6 +6,7 @@ import {
     Settings,
     ShieldCheck,
     Code2,
+    ScrollText,
 } from 'lucide-react';
 
 import { ROUTES } from './routes';
@@ -60,5 +61,11 @@ export const dashboardNavigation: NavigationItem[] = [
         href: ROUTES.DEVELOPERS,
         icon: Code2,
         requiredPermissions: ['access:developer_tools']
+    },
+    {
+        name: 'Audit Trail',
+        href: ROUTES.AUDIT,
+        icon: ScrollText,
+        requiredPermissions: ['view:audit_logs']
     },
 ];

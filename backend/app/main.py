@@ -23,7 +23,7 @@ from app.core.database import engine
 from app.models.all_models import Workspace, User, PipelineMessage, FhirResource, ApiKey, AuditLog  # noqa: F401
 from app.core.database import Base
 
-from app.api.v1 import auth, messages, fhir, developers, settings as settings_router, onboarding
+from app.api.v1 import auth, messages, fhir, developers, settings as settings_router, onboarding, audit
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -115,7 +115,7 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
         content={"detail": "An internal server error occurred."},
     )
 
-from app.api.v1 import auth, onboarding, messages, fhir, developers, settings as settings_router
+from app.api.v1 import auth, onboarding, messages, fhir, developers, settings as settings_router, audit
 
 # ── Router Registration ────────────────────────────────────────────────────────
 API = settings.API_V1_STR  # /api/v1
@@ -126,6 +126,7 @@ app.include_router(messages.router,    prefix=f"{API}/messages",     tags=["Mess
 app.include_router(fhir.router,        prefix=f"{API}/fhir",         tags=["FHIR"])
 app.include_router(developers.router,  prefix=f"{API}/developers",   tags=["Developers"])
 app.include_router(settings_router.router, prefix=f"{API}/settings", tags=["Settings"])
+app.include_router(audit.router,       prefix=f"{API}/audit",        tags=["Audit"])
 
 # ── Health Check ───────────────────────────────────────────────────────────────
 @app.get("/health", tags=["Health"])

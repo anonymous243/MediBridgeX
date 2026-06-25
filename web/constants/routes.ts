@@ -19,4 +19,6 @@ export const ROUTES = {
     '/dashboard/settings',
   DEVELOPERS:
     '/dashboard/developers',
+  AUDIT:
+    '/dashboard/audit',
 } as const;
