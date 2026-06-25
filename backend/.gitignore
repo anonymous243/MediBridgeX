@@ -1,0 +1,48 @@
+# ============================================================
+# MediBridgeX Backend — .gitignore
+# CRITICAL: .env must NEVER be committed to version control.
+# It contains cryptographic keys that protect all PHI data.
+# ============================================================
+
+# Environment & secrets — NEVER commit these
+.env
+.env.*
+!.env.example
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# SQLite local dev database
+*.db
+*.sqlite
+*.sqlite3
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Test & coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.hypothesis/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
