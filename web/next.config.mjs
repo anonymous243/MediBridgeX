@@ -1,5 +1,3 @@
-
-
 // ============================================================
 // HTTP Security Headers — MediBridgeX Production Hardening
 // Applied to every route. Required for HIPAA technical safeguards.
@@ -72,6 +70,16 @@ const nextConfig = {
       headers: SECURITY_HEADERS,
     },
   ],
+  webpack: (config, { isServer, nextRuntime }) => {
+    // Cloudflare Edge Runtime requires Node built-ins to be properly resolved
+    if (nextRuntime === 'edge') {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'async_hooks': 'node:async_hooks',
+      };
+    }
+    return config;
+  }
 };
 
 export default nextConfig;
