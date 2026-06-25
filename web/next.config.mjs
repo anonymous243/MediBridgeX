@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+
 
 // ============================================================
 // HTTP Security Headers — MediBridgeX Production Hardening
@@ -64,7 +64,7 @@ const SECURITY_HEADERS = [
   },
 ];
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   headers: async () => [
     {
       // Apply security headers to all routes
