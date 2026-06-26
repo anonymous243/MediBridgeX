@@ -21,3 +21,4 @@ web/.vercel/
 # Logs
 *.log
 otp_deliveries.log
+\n.wrangler/
