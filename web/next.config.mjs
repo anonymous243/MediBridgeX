@@ -63,6 +63,9 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig = {
+  experimental: {
+    serverComponentsExternalPackages: ['async_hooks', 'node:async_hooks'],
+  },
   headers: async () => [
     {
       // Apply security headers to all routes
