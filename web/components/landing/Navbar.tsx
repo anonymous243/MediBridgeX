@@ -98,7 +98,7 @@ export function Navbar() {
             </div>
           </div>
 
-          {["Solutions", "Developers", "Resources", "Company"].map((item) => (
+          {["Solutions", "Resources", "Company"].map((item) => (
             <Link
               key={item}
               href={item === "Developers" ? "/docs" : "/"}

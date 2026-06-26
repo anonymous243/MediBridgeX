@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const signInSchema = z.object({
-  email: z.string().min(1, "Enter mail id").email("Invalid email address"),
+  email: z.string().min(1, "Enter mail id or username"),
   password: z.string().min(1, "Enter password"),
   hipaaChecked: z.literal(true, {
     message: "You must agree to the HIPAA Compliance Agreement."

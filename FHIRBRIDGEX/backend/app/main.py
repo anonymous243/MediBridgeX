@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import dashboard, fhir_lookup, fhir_submit, health, hl7, patients
+from app.api import dashboard, fhir_lookup, fhir_submit, health, hl7, patients, auth
 from app.core.config import settings
 from app.core.database import init_db
 from app.models import hl7_record, patient_record
@@ -34,6 +34,7 @@ app.add_middleware(
 )
 
 app.include_router(health.router)
+app.include_router(auth.router)
 app.include_router(dashboard.router)
 app.include_router(fhir_lookup.router)
 app.include_router(fhir_submit.router)

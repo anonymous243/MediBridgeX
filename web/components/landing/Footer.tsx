@@ -5,7 +5,7 @@ const footerLinks = [
   {
     title: "Product",
     links: [
-      { name: "Interoperability Engine", href: "/" },
+
       { name: "FHIR API Gateway", href: "/product/fhir-gateway" },
       { name: "Legacy Connectors", href: "/" },
       { name: "Data Transformation", href: "/" },
@@ -26,7 +26,7 @@ const footerLinks = [
     title: "Company",
     links: [
       { name: "About Us", href: "/about" },
-      { name: "Careers", href: "/careers" },
+
       { name: "Contact Sales", href: "/contact" },
     ],
   },

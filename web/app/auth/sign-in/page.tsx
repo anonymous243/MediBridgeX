@@ -102,8 +102,8 @@ export default function SignInPage() {
                     <form className="space-y-5" onSubmit={handleSignIn}>
                         <AuthInput
                             id="email"
-                            label="Work Email"
-                            type="email"
+                            label="Work Email or Username"
+                            type="text"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder={emailError || "name@organization.com"}

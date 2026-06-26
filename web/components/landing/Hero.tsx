@@ -223,14 +223,7 @@ export function Hero() {
 
           {/* CTA buttons */}
           <div className="flex items-center gap-3 mb-10">
-            <button
-              onClick={() => document.getElementById("waitlist-section")?.scrollIntoView({ behavior: "smooth" })}
-              className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ background: "linear-gradient(135deg,#ec4899,#a855f7)" }}
-            >
-              Join Waitlist
-              <IconArrowRight className="w-4 h-4" />
-            </button>
+
             <Link href="/docs" className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-gray-700 border border-gray-300 bg-white hover:bg-gray-50 transition-colors">
               Explore Docs
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -293,8 +286,8 @@ export function Hero() {
       {/* ══════════════════════════════════════
           HOW IT WORKS + WAITLIST
       ══════════════════════════════════════ */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid md:grid-cols-2 gap-6 items-stretch">
+      <div className="max-w-3xl mx-auto px-6 py-12">
+        <div className="flex flex-col gap-6 items-stretch">
 
           {/* How it works */}
           <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-sm p-6">
@@ -334,69 +327,7 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Waitlist */}
-          <div
-            id="waitlist-section"
-            className="rounded-2xl p-6 border"
-            style={{
-              background: "linear-gradient(135deg, #fdf2f8 0%, #faf5ff 100%)",
-              borderColor: "#fbcfe8",
-            }}
-          >
-            <p className="text-sm font-bold text-gray-900 mb-1">Be the first to know</p>
-            <p className="text-sm text-gray-500 mb-5">
-              Join our waitlist and get early access to MediBridgeX.
-            </p>
-            {status === "success" ? (
-              <div className="flex items-center gap-3 py-3 px-4 bg-white/80 rounded-xl border border-green-100 animate-in fade-in zoom-in duration-300">
-                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
-                  <IconCheck className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-gray-900">You&apos;re on the list!</p>
-                  <p className="text-xs text-gray-500">We&apos;ll notify you when we launch.</p>
-                </div>
-              </div>
-            ) : !isMounted ? (
-              <div className="h-10 w-full bg-gray-50 rounded-xl animate-pulse" />
-            ) : (
-              <form onSubmit={handleSubmit} className="flex gap-2" suppressHydrationWarning>
-                <div className="relative flex-1" suppressHydrationWarning>
-                  <IconMail className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your work email"
-                    required
-                    suppressHydrationWarning
-                    className="w-full h-10 pl-9 pr-3 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-50"
-                    style={{ "--tw-ring-color": "#f472b6" } as React.CSSProperties}
-                    disabled={status === "loading"}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="inline-flex items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white whitespace-nowrap hover:opacity-90 transition-all active:scale-95 disabled:opacity-70"
-                  style={{ background: "linear-gradient(135deg,#ec4899,#a855f7)" }}
-                >
-                  {status === "loading" ? (
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      Join Waitlist
-                      <IconArrowRight className="w-3.5 h-3.5" />
-                    </>
-                  )}
-                </button>
-              </form>
-            )}
-            <div className="flex items-center gap-1.5 mt-3">
-              <IconLock className="w-3 h-3 text-gray-400" />
-              <span className="text-xs text-gray-400">We respect your privacy. No spam, ever.</span>
-            </div>
-          </div>
+
         </div>
       </div>
 
