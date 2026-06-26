@@ -48,11 +48,11 @@ export default function SignInPage() {
             setIsSubmitting(true);
             const response = await AuthService.login(validation.data);
             setSessionUser(response.user);
-            // Route: if onboarding not completed, send to wizard; else go to dashboard
+            // Route: if onboarding not completed, send to wizard; else go to portal
             if (!response.user.onboardingCompleted) {
                 router.push("/onboarding");
             } else {
-                router.push("/dashboard");
+                router.push("/portal");
             }
         } catch (err: any) {
             setFormError(err.message || "Account not found. Please create an account.");
