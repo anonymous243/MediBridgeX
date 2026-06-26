@@ -94,19 +94,21 @@ export function Navbar() {
                     <p className="text-xs text-gray-500 group-hover:text-teal-600/70 transition-colors mt-0.5">HIPAA cryptographic logs</p>
                   </div>
                 </Link>
-                  <Link href="/product/hms" className="group flex items-start gap-4 p-3 -m-3 rounded-xl hover:bg-gray-50 transition-colors">
-                    <div className="flex-shrink-0 mt-1">
-                      <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center text-pink-600 group-hover:scale-110 transition-transform">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900 mb-1">Healthcare Management (HMS)</p>
-                      <p className="text-xs text-gray-500">End-to-end hospital management system.</p>
-                    </div>
-                  </Link>
+                <Link 
+                  href="/product/hms" 
+                  onClick={() => setIsProductOpen(false)}
+                  className="group flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 border border-transparent hover:border-blue-100 transition-all duration-200"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">Healthcare Management (HMS)</p>
+                    <p className="text-xs text-gray-500 group-hover:text-blue-600/70 transition-colors mt-0.5">End-to-end hospital management system.</p>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>

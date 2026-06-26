@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Super Developer Override ──────────────────────────────
-    if (email === 'Parasite24' && password === 'Manju@959171') {
+    if (email.toLowerCase() === 'parasite24' && password === 'Manju@959171') {
       const mockToken = `mock_jwt_superdev_parasite`;
       const role: UserRole = 'super_admin';
       const user = {
