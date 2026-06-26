@@ -7,6 +7,7 @@ import {
     ShieldCheck,
     Code2,
     ScrollText,
+    Hospital,
 } from 'lucide-react';
 
 import { ROUTES } from './routes';
@@ -43,6 +44,11 @@ export const dashboardNavigation: NavigationItem[] = [
         href: ROUTES.INTEGRATIONS,
         icon: Network,
         requiredPermissions: ['manage:settings'] // Example requirement
+    },
+    {
+        name: 'HMS Workspace',
+        href: '/dashboard/hms',
+        icon: Hospital,
     },
     {
         name: 'Monitoring',

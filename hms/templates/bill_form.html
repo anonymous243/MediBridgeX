@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block page_title %}{{ 'Edit invoice' if bill else 'New invoice' }}{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom:14px">
+  <a href="{{ url_for('billing') }}" class="btn btn-outline btn-sm">← Back to billing</a>
+</div>
+
+<div class="form-card">
+  <h2 style="font-size:16px;font-weight:600;margin-bottom:20px">
+    {{ 'Edit invoice' if bill else 'Create new invoice' }}
+  </h2>
+
+  <form method="post">
+    <div class="form-grid">
+
+      <div class="form-group full">
+        <label>Patient *</label>
+        <select name="patient_id" required>
+          <option value="">— Select patient —</option>
+          {% for p in patients %}
+            <option value="{{ p.id }}"
+              {{ 'selected' if bill and bill.patient_id==p.id }}>
+              {{ p.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Category *</label>
+        <select name="category" required>
+          {% for c in ['Consultation','Procedures','Pharmacy','Lab / Diagnostics','Room charges','Emergency','Surgery','Other'] %}
+            <option value="{{ c }}" {{ 'selected' if bill and bill.category==c }}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Total amount (₹) *</label>
+        <input name="amount" type="number" min="0" step="0.01" required
+          value="{{ bill.amount if bill else '' }}" placeholder="0.00">
+      </div>
+
+      <div class="form-group">
+        <label>Amount paid (₹)</label>
+        <input name="paid" type="number" min="0" step="0.01"
+          value="{{ bill.paid if bill else '0' }}" placeholder="0.00">
+      </div>
+
+      {% if bill %}
+      <div class="form-group">
+        <label>Status (override)</label>
+        <select name="status">
+          {% for s in ['Pending','Partial','Paid','Overdue'] %}
+            <option value="{{ s }}" {{ 'selected' if bill.status==s }}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
+      <div class="form-group full">
+        <label>Notes</label>
+        <textarea name="notes" placeholder="Any remarks…">{{ bill.notes if bill else '' }}</textarea>
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">
+        {{ 'Save changes' if bill else 'Create invoice' }}
+      </button>
+      <a href="{{ url_for('billing') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

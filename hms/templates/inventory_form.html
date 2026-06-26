@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block page_title %}{{ 'Edit item' if item else 'Add inventory item' }}{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom:14px">
+  <a href="{{ url_for('inventory') }}" class="btn btn-outline btn-sm">← Back to inventory</a>
+</div>
+
+<div class="form-card">
+  <h2 style="font-size:16px;font-weight:600;margin-bottom:20px">
+    {{ 'Edit item' if item else 'Add new item' }}
+  </h2>
+
+  <form method="post">
+    <div class="form-grid">
+
+      <div class="form-group full">
+        <label>Item name *</label>
+        <input name="item_name" required
+          value="{{ item.item_name if item else '' }}"
+          placeholder="e.g. Paracetamol 500mg">
+      </div>
+
+      <div class="form-group">
+        <label>Category *</label>
+        <select name="category" required>
+          {% for c in ['Pharmacy','Consumables','Equipment','Lab supplies','Linen','Other'] %}
+            <option value="{{ c }}" {{ 'selected' if item and item.category==c }}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Unit *</label>
+        <select name="unit">
+          {% for u in ['Units','Strips','Tablets','Pairs','Rolls','Bottles','Boxes','Vials','Litres','KG'] %}
+            <option value="{{ u }}" {{ 'selected' if item and item.unit==u }}>{{ u }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Current quantity *</label>
+        <input name="quantity" type="number" min="0" required
+          value="{{ item.quantity if item else '' }}">
+      </div>
+
+      <div class="form-group">
+        <label>Reorder level *</label>
+        <input name="reorder_level" type="number" min="0" required
+          value="{{ item.reorder_level if item else '' }}"
+          placeholder="Alert when stock falls below this">
+      </div>
+
+      <div class="form-group">
+        <label>Unit price (₹)</label>
+        <input name="unit_price" type="number" min="0" step="0.01"
+          value="{{ item.unit_price if item else '0' }}">
+      </div>
+
+      <div class="form-group full">
+        <label>Supplier</label>
+        <input name="supplier"
+          value="{{ item.supplier if item else '' }}"
+          placeholder="Supplier / vendor name">
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">
+        {{ 'Save changes' if item else 'Add item' }}
+      </button>
+      <a href="{{ url_for('inventory') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

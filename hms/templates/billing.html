@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block page_title %}Billing{% endblock %}
+
+{% block content %}
+
+<!-- Summary cards -->
+<div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+  <div class="metric-card">
+    <div class="label">Total billed</div>
+    <div class="value">₹{{ "{:,.0f}".format(total_billed) }}</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Collected</div>
+    <div class="value">₹{{ "{:,.0f}".format(total_collected) }}</div>
+    <div class="sub up">
+      {{ "{:.0f}".format(total_collected/total_billed*100 if total_billed else 0) }}% collection rate
+    </div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Outstanding</div>
+    <div class="value">₹{{ "{:,.0f}".format(outstanding) }}</div>
+    <div class="sub {{ 'down' if overdue_count > 0 else '' }}">{{ overdue_count }} overdue invoice(s)</div>
+  </div>
+</div>
+
+<div class="toolbar">
+  <div style="font-size:12px;color:#6b7280">{{ bills|length }} invoice(s) total</div>
+  <a href="{{ url_for('new_bill') }}" class="btn btn-primary">+ New invoice</a>
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Invoice</th>
+        <th>Patient</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Paid</th>
+        <th>Balance</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for b in bills %}
+      <tr>
+        <td style="font-weight:600;color:#1d9e75">{{ b.invoice_no }}</td>
+        <td>{{ b.patient_name }}</td>
+        <td>{{ b.category }}</td>
+        <td>₹{{ "{:,.0f}".format(b.amount) }}</td>
+        <td>₹{{ "{:,.0f}".format(b.paid) }}</td>
+        <td>₹{{ "{:,.0f}".format(b.amount - b.paid) }}</td>
+        <td style="color:#9ca3af">{{ b.bill_date }}</td>
+        <td>
+          {% if b.status == 'Paid' %}
+            <span class="pill pill-green">Paid</span>
+          {% elif b.status == 'Overdue' %}
+            <span class="pill pill-red">Overdue</span>
+          {% elif b.status == 'Partial' %}
+            <span class="pill pill-purple">Partial</span>
+          {% else %}
+            <span class="pill pill-amber">Pending</span>
+          {% endif %}
+        </td>
+        <td style="white-space:nowrap">
+          <a href="{{ url_for('edit_bill', bid=b.id) }}" class="btn btn-outline btn-sm">Edit</a>
+          <form method="post" action="{{ url_for('delete_bill', bid=b.id) }}" style="display:inline"
+                onsubmit="return confirm('Delete invoice {{ b.invoice_no }}?')">
+            <button class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="9" style="text-align:center;color:#9ca3af;padding:30px">No invoices yet.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

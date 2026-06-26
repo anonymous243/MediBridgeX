@@ -5,6 +5,7 @@ const footerLinks = [
   {
     title: "Product",
     links: [
+      { name: "Healthcare Management (HMS)", href: "/product/hms" },
 
       { name: "FHIR API Gateway", href: "/product/fhir-gateway" },
       { name: "Legacy Connectors", href: "/" },

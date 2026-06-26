@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- ── KPI cards ───────────────────────────── -->
+<div class="metrics">
+  <div class="metric-card">
+    <div class="label">Total patients</div>
+    <div class="value">{{ total_patients }}</div>
+    <div class="sub">All registered patients</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Today's appointments</div>
+    <div class="value">{{ todays_appts }}</div>
+    <div class="sub warn">{{ pending_appts }} pending confirmation</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Revenue collected</div>
+    <div class="value">₹{{ "{:,.0f}".format(total_collected) }}</div>
+    <div class="sub up">of ₹{{ "{:,.0f}".format(total_billed) }} billed</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Low stock alerts</div>
+    <div class="value">{{ low_stock }}</div>
+    <div class="sub {{ 'down' if low_stock > 0 else '' }}">items need restock</div>
+  </div>
+</div>
+
+<!-- ── Two column section ───────────────────── -->
+<div class="two-col">
+
+  <!-- Today's appointments -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Today's appointments — {{ today }}</div>
+      <a href="{{ url_for('appointments') }}" class="btn btn-outline btn-sm">View all</a>
+    </div>
+
+    {% if recent_appts %}
+      {% for a in recent_appts %}
+        <div class="appt-row">
+          <div class="appt-time">{{ a.appt_time }}</div>
+          <div class="appt-info">
+            <p>{{ a.patient_name }}</p>
+            <small>{{ a.doctor }} · {{ a.department }}</small>
+          </div>
+          <div class="appt-status-col">
+            {% if a.status == 'Confirmed' %}
+              <span class="pill pill-green">Confirmed</span>
+            {% elif a.status == 'Pending' %}
+              <span class="pill pill-amber">Pending</span>
+            {% elif a.status == 'Urgent' %}
+              <span class="pill pill-red">Urgent</span>
+            {% else %}
+              <span class="pill pill-blue">{{ a.status }}</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="color:#9ca3af;font-size:13px;padding:10px 0">No appointments today.</p>
+    {% endif %}
+  </div>
+
+  <!-- Patients by department -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Patients by department</div>
+    </div>
+
+    {% set max_count = dept_counts[0].cnt if dept_counts else 1 %}
+    {% for row in dept_counts %}
+      <div class="dept-row">
+        <div class="dept-name">{{ row.department }}</div>
+        <div class="dept-bar-wrap">
+          <div class="dept-bar" style="width:{{ (row.cnt / max_count * 100)|int }}%"></div>
+        </div>
+        <div class="dept-count">{{ row.cnt }}</div>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}
