@@ -54,8 +54,8 @@ export default function SignInPage() {
             } else {
                 router.push("/dashboard");
             }
-        } catch (err) {
-            setFormError("Account not found. Please create an account.");
+        } catch (err: any) {
+            setFormError(err.message || "Account not found. Please create an account.");
         } finally {
             setIsSubmitting(false);
         }
