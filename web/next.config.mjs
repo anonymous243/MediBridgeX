@@ -70,6 +70,16 @@ const nextConfig = {
       headers: SECURITY_HEADERS,
     },
   ],
+  webpack: (config, { isServer, nextRuntime }) => {
+    // Prevent Webpack from trying to bundle or resolve async_hooks in Edge runtime
+    if (nextRuntime === 'edge') {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'async_hooks': false,
+      };
+    }
+    return config;
+  }
 };
 
 export default nextConfig;
