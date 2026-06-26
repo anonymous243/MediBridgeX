@@ -1,5 +1,5 @@
 services:
-  # 1. FastAPI Backend
+  # 1. FastAPI Backend (All-in-one free tier)
   - type: web
     name: fhirbridge-backend
     env: python
@@ -11,44 +11,9 @@ services:
         fromDatabase:
           name: fhirbridge-db
           property: connectionString
-      - key: RABBITMQ_URL
-        fromService:
-          type: pserv
-          name: rabbitmq-broker
-          envVarKey: RABBITMQ_INTERNAL_URL
-          
-  # 2. Celery / Pika Background Worker
-  - type: worker
-    name: fhirbridge-worker
-    env: python
-    rootDir: FHIRBRIDGEX
-    buildCommand: "pip install -r backend/requirements.txt"
-    startCommand: "cd worker && python main.py"
-    envVars:
-      - key: POSTGRES_URL
-        fromDatabase:
-          name: fhirbridge-db
-          property: connectionString
-      - key: RABBITMQ_URL
-        fromService:
-          type: pserv
-          name: rabbitmq-broker
-          envVarKey: RABBITMQ_INTERNAL_URL
-
-  # 3. RabbitMQ Message Broker (Private Service)
-  - type: pserv
-    name: rabbitmq-broker
-    env: docker
-    rootDir: FHIRBRIDGEX
-    repo: https://github.com/docker-library/rabbitmq.git
-    branch: master
-    dockerfilePath: "3.13/alpine/Dockerfile"
-    envVars:
-      - key: RABBITMQ_INTERNAL_URL
-        value: "amqp://guest:guest@rabbitmq-broker:5672/"
 
 databases:
-  # 4. PostgreSQL Database
+  # 2. PostgreSQL Database (Free tier)
   - name: fhirbridge-db
     databaseName: fhirbridge
     user: fhirbridge
