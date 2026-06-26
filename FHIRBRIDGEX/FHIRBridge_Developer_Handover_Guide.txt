@@ -1,0 +1,447 @@
+﻿FHIRBridge Developer Handover Guide
+A beginner-friendly explanation for a developer who is new to this project, including architecture, endpoints, methods, data flow, deployment, and debugging.
+1. What This Project Is
+FHIRBridge is a small healthcare interoperability application. It accepts patient data and HL7 messages, converts them into FHIR-style JSON, stores records in a database, and can send FHIR resources to a FHIR server endpoint.
+A developer should think of it as five cooperating parts: React frontend, FastAPI backend, worker process, Postgres database, and RabbitMQ message queue.
+    • Frontend: the browser interface for viewing logs, loading FHIR resources, editing JSON, and submitting to FHIR endpoints.
+    • Backend: the HTTP API. It validates requests, stores data, publishes HL7 jobs, and submits FHIR resources.
+    • Worker: background process that consumes HL7 jobs from RabbitMQ and converts them to FHIR JSON.
+    • Postgres: persistent storage for patient and HL7 records.
+    • RabbitMQ: queue used to pass HL7 messages from backend to worker.
+2. Technology Stack
+Layer
+Technology
+Why it is used
+Frontend
+React + Vite
+Builds the browser dashboard quickly and calls the backend API.
+Icons/UI
+lucide-react
+Provides icons used in sidebar, buttons, and dashboard controls.
+Backend
+FastAPI + Uvicorn
+Exposes Python API routes and runs the HTTP server.
+Validation
+Pydantic
+Validates request bodies such as patient creation and FHIR submit requests.
+Database
+PostgreSQL
+Stores patient records and HL7 records.
+ORM
+SQLAlchemy
+Maps Python classes to database tables and manages sessions.
+Queue
+RabbitMQ + pika
+Carries background HL7 jobs from backend to worker.
+HTTP client
+httpx
+Sends resources to external FHIR endpoints.
+Deployment
+Docker Compose
+Runs frontend, backend, worker, Postgres, and RabbitMQ together.
+
+3. Project Folder Map
+Path
+Meaning
+docker-compose.yml
+Defines all containers and how they connect.
+.env.example
+Default environment variables used by backend and worker in Docker.
+backend/Dockerfile
+Builds the FastAPI backend image.
+backend/app/main.py
+Creates the FastAPI app, enables CORS, initializes database, and registers routers.
+backend/app/api
+HTTP route files. These are the entry points for API requests.
+backend/app/services
+Business logic used by API routes.
+backend/app/models
+Pydantic request models and SQLAlchemy database models.
+backend/app/core
+Configuration, database setup, and logging helpers.
+worker/Dockerfile
+Builds the background worker image.
+worker/app/main.py
+Starts the worker and begins consuming RabbitMQ messages.
+worker/app/services.py
+HL7 parsing, HL7 to FHIR conversion, and auto-submit logic for the worker.
+frontend/src/main.jsx
+Main React app with dashboard, endpoint submit UI, and API calls.
+frontend/src/styles.css
+Frontend styling.
+
+4. Docker Deployment
+The local deployment is controlled by docker-compose.yml. It starts five services.
+Service
+Container job
+Port
+backend
+Runs uvicorn app.main:app for the FastAPI API.
+8000
+frontend
+Runs npm run dev for the Vite React app.
+5173
+worker
+Runs python -m app.main to process queue messages.
+No browser port
+postgres
+Runs PostgreSQL 16 with persistent volume postgres_data.
+5432
+rabbitmq
+Runs RabbitMQ with management UI.
+5672 and 15672
+
+Start the project from the workspace folder:
+cd C:\Users\DELL\Documents\FHIRBRIDGEX
+docker compose up -d --build
+Check status:
+docker compose ps
+Stop the project:
+docker compose down
+5. Environment Variables
+The Docker services load .env.example. For production, create a real .env file with safer values.
+Variable
+Meaning
+APP_NAME
+Display/application name used by settings.
+APP_ENV
+Environment label, currently development.
+API_HOST / API_PORT
+Backend host and port values.
+DATABASE_URL
+SQLAlchemy connection string for Postgres.
+RABBITMQ_URL
+AMQP connection string for RabbitMQ.
+HL7_QUEUE_NAME
+Queue name used for HL7 jobs. Current value: hl7_messages.
+FHIR_AUTO_SUBMIT_ENABLED
+If true, generated FHIR resources are automatically submitted.
+FHIR_AUTO_SUBMIT_ENDPOINTS
+Comma-separated FHIR base URLs used for auto-submit.
+POSTGRES_DB / POSTGRES_USER / POSTGRES_PASSWORD
+Database name and credentials used by the Postgres container.
+
+6. Backend Application Startup
+backend/app/main.py creates the FastAPI application. The key startup steps are:
+    1. lifespan(app) calls init_db() when the API starts.
+    2. init_db() creates SQLAlchemy tables and adds missing JSONB columns if needed.
+    3. FastAPI CORS middleware allows the local frontend on ports 3000 and 5173.
+    4. Routers are included for health, dashboard, FHIR lookup, FHIR submit, HL7, and patients.
+This means backend/app/main.py is the best first file to open when trying to understand how API routes are wired into the server.
+7. API Routes and What They Do
+Method
+Route
+Function
+Purpose
+GET
+/health
+health_check
+Simple health check. Returns status ok.
+GET
+/api/dashboard-events
+fetch_dashboard_events
+Returns dashboard log rows from patient and HL7 records.
+POST
+/api/fhir/submit
+submit_fhir
+Validates or submits a FHIR resource to selected FHIR endpoints.
+GET
+/api/fhir/{resource_id}
+fetch_fhir_resource
+Loads stored FHIR JSON by patient ID or HL7 message ID.
+POST
+/hl7
+receive_hl7_message
+Accepts raw HL7 text, stores queued record, and publishes job to RabbitMQ.
+GET
+/hl7/messages
+fetch_hl7_messages
+Lists stored HL7 records.
+POST
+/api/patient
+accept_patient
+Accepts simple JSON patient data, converts it to FHIR, stores it, and auto-submits if configured.
+GET
+/api/patients/{patient_id}
+fetch_patient
+Fetches one stored patient FHIR resource.
+GET
+/api/patient-records
+fetch_patient_records
+Lists patient rows used by the frontend dashboard.
+POST
+/messages
+ingest_fhir_message
+Legacy/simple queue endpoint for generic FHIR messages.
+
+8. Main Data Flows
+8.1 JSON Patient Flow
+    5. Client sends POST /api/patient with external_id, name, dob, gender, phone, and address.
+    6. accept_patient() receives a PatientCreate model.
+    7. create_patient() calls convert_patient_to_fhir().
+    8. convert_patient_to_fhir() calls convert_json_patient_to_fhir().
+    9. The result is a FHIR Patient resource with resourceType Patient.
+    10. auto_submit_fhir_resource() sends the resource to configured endpoints when auto-submit is enabled.
+    11. A PatientRecord row is saved in Postgres with fhir_json and fhir_submission_results.
+8.2 HL7 Message Flow
+    12. Client sends POST /hl7 with raw text/plain HL7 message.
+    13. receive_hl7_message() calls queue_hl7_message().
+    14. queue_hl7_message() checks the message is not empty and starts with MSH|.
+    15. create_queued_hl7_record() saves a queued HL7Record row in Postgres.
+    16. publish_message() sends a job to RabbitMQ queue hl7_messages.
+    17. worker/app/main.py starts consume_hl7_messages(process_hl7_message).
+    18. process_hl7_message() converts HL7 to FHIR Bundle and updates the HL7Record to processed.
+    19. auto_submit_fhir_resource() may submit the generated Bundle to configured FHIR endpoints.
+8.3 Dashboard Flow
+    20. Frontend calls GET /api/patient-records and GET /api/dashboard-events together.
+    21. fetch_patient_records() returns summary rows from patients table.
+    22. fetch_dashboard_events() combines patient records and HL7 records into one timeline.
+    23. Frontend shows metrics, logs, processing status, and FHIR submit status.
+8.4 Manual FHIR Submit Flow
+    24. Developer opens the Endpoint Submit tab in the frontend.
+    25. Frontend calls GET /api/fhir/{resource_id} to load stored FHIR JSON.
+    26. Developer can edit the JSON in the textarea.
+    27. Frontend sends POST /api/fhir/submit with resource_id, endpoints, mode, and optional edited resource.
+    28. submit_fhir() calls submit_fhir_resource().
+    29. submit_fhir_resource() builds the correct FHIR URL and sends HTTP requests to each endpoint.
+9. Backend Services Explained
+File
+Main methods
+Explanation
+patient_service.py
+create_patient, get_patient, list_patient_records
+Handles JSON patient conversion, storage, lookup, and dashboard list data.
+fhir_mapper.py
+convert_json_patient_to_fhir, convert_hl7_adt_to_fhir_bundle
+Converts app inputs into FHIR-compatible JSON.
+hl7_service.py
+queue_hl7_message
+Validates raw HL7 and publishes it to RabbitMQ.
+hl7_record_service.py
+create_queued_hl7_record, list_hl7_records
+Creates and lists HL7 database records.
+rabbitmq_producer.py
+publish_message
+Opens RabbitMQ connection and publishes JSON message to queue.
+fhir_lookup_service.py
+get_fhir_by_id
+Looks for a FHIR resource in patient records first, then HL7 records.
+fhir_submit_service.py
+submit_fhir_resource, build_fhir_request, build_fhir_url
+Builds FHIR endpoint requests, submits resources, parses responses, and handles duplicate resource retry.
+dashboard_service.py
+list_dashboard_events, submission_status
+Builds frontend dashboard event rows from database records.
+mapping.py
+normalize_fhir_payload
+Normalizes generic FHIR payloads for the older /messages flow.
+
+10. FHIR Mapping Logic
+The mapper converts ordinary app data or HL7 segments into FHIR JSON. This is the heart of the interoperability behavior.
+Method
+Input
+Output / job
+split_components(value)
+HL7 field value like DOE^JOHN
+Splits by caret into HL7 components.
+hl7_date_to_fhir(value)
+HL7 date like 19900101
+FHIR date string like 1990-01-01.
+parse_hl7_message(hl7_message)
+Raw HL7 text
+Dictionary grouped by segment name, such as MSH, PID, PV1.
+parse_message_type(segments)
+Parsed HL7 segments
+Message type and trigger event, such as ADT^A01 and A01.
+build_patient_identifier(raw_identifier, fallback_id)
+PID-3 value
+FHIR identifier list and chosen patient ID.
+build_human_name(raw_name)
+PID-5 value
+FHIR HumanName list.
+build_address(raw_address)
+PID-11 value
+FHIR Address list.
+build_telecom(values)
+PID phone fields
+FHIR telecom list.
+convert_json_patient_to_fhir(patient)
+PatientCreate JSON model
+FHIR Patient resource.
+convert_hl7_adt_to_fhir_bundle(message_id, hl7_message)
+Message ID plus raw HL7
+FHIR Bundle with MessageHeader, Patient, and optional Encounter.
+
+Important mapping constants:
+    • HL7_GENDER_MAP maps M, F, O, U, A, and N into FHIR gender values.
+    • ADT_ENCOUNTER_STATUS maps common ADT trigger events to FHIR Encounter statuses.
+    • The HL7 Bundle includes MessageHeader and Patient. If PV1 exists, it also includes Encounter.
+11. FHIR Submit Logic
+FHIR submit is handled by backend/app/services/fhir_submit_service.py. It supports two modes.
+Mode
+URL pattern
+HTTP method
+Meaning
+validate
+{base}/{resourceType}/$validate
+POST
+Ask the FHIR server if the resource is valid without storing it.
+submit with id
+{base}/{resourceType}/{id}
+PUT
+Create or update a specific resource ID.
+submit without id
+{base}/{resourceType}
+POST
+Ask the FHIR server to create a new resource ID.
+
+The service also handles a duplicate resource case. If the server returns status 412 and the response says a resource already exists, duplicate_resource_id_from_outcome() extracts the existing ID and retries with PUT.
+12. Database Models
+Model
+Table
+Important columns
+PatientRecord
+patients
+id, patient_id, fhir_json, fhir_submission_results, created_at
+HL7Record
+hl7_messages
+id, message_id, message_type, raw_message, fhir_json, fhir_submission_results, status, processed_at
+
+Both tables store FHIR JSON in PostgreSQL JSONB columns. That makes it easy to save the entire generated FHIR resource without creating many separate relational tables.
+13. Worker Explained
+The worker is separate from the backend so HL7 processing can happen in the background. The backend can return quickly after queuing the message, while the worker does conversion and submission later.
+File
+Method
+Purpose
+worker/app/main.py
+run
+Initializes DB, prints startup message, and starts RabbitMQ consumer.
+worker/app/queue.py
+get_connection
+Creates RabbitMQ connection from RABBITMQ_URL.
+worker/app/queue.py
+consume_hl7_messages
+Declares queue and waits for messages.
+worker/app/queue.py
+handle_message
+Parses JSON body, calls callback, and acknowledges message.
+worker/app/jobs/process_hl7_message.py
+process_hl7_message
+Converts HL7 to FHIR, auto-submits, and updates database record.
+worker/app/services.py
+convert_hl7_to_fhir_patient
+Alias that returns the HL7 ADT FHIR Bundle.
+
+14. Frontend Explained
+The frontend is a single React app in frontend/src/main.jsx. It stores dashboard state, fetches backend data, and lets the developer submit FHIR resources.
+Frontend function/state
+What it does
+API_BASE_URL
+Defaults to http://127.0.0.1:8000 unless VITE_API_BASE_URL is set.
+DEFAULT_ENDPOINTS
+Contains HAPI FHIR R4 public test server.
+compactId(value)
+Shortens long IDs for display in the table.
+displayProcessingStatus(status)
+Renames processed to Bridge processed for UI display.
+ensureHapiSelected(endpointList)
+Makes sure HAPI endpoint exists and stays selected.
+loadEndpoints()
+Loads saved endpoints from localStorage.
+fetchDashboard()
+Calls /api/patient-records and /api/dashboard-events.
+filteredEvents
+Filters dashboard logs by search text.
+fetchFhirResource(resourceId)
+Calls /api/fhir/{id}, loads JSON into editor.
+addEndpoint()
+Adds endpoint row to local UI state.
+updateEndpoint()
+Updates endpoint name, URL, or selected checkbox.
+removeEndpoint()
+Removes endpoint row.
+submitToEndpoints(mode)
+Calls /api/fhir/submit with selected endpoints and edited JSON.
+
+15. Full Method Inventory
+This section lists the main classes and methods found in backend and worker code, grouped by area.
+Area
+Classes / methods
+Backend config/db
+Settings, Base, init_db, get_db, get_logger
+Backend API
+health_check, fetch_dashboard_events, submit_fhir, fetch_fhir_resource, receive_hl7_message, fetch_hl7_messages, accept_patient, fetch_patient, fetch_patient_records, ingest_fhir_message
+Backend models
+Patient, PatientCreate, PatientRecord, HL7Record, FHIRSubmitRequest
+Backend patient service
+convert_patient_to_fhir, create_patient, get_patient, list_patient_records
+Backend HL7 service
+database_unavailable_error, queue_hl7_message, get_hl7_message_type, create_queued_hl7_record, list_hl7_records
+Backend FHIR mapper
+split_components, hl7_date_to_fhir, parse_hl7_message, parse_message_type, build_patient_identifier, build_human_name, build_address, build_telecom, convert_json_patient_to_fhir, convert_hl7_adt_to_fhir_bundle
+Backend FHIR submit
+build_fhir_url, build_fhir_request, parse_fhir_response_body, duplicate_resource_id_from_outcome, result_from_response, submit_fhir_resource, configured_auto_submit_endpoints, auto_submit_fhir_resource
+Backend lookup/dashboard
+get_fhir_by_id, submission_status, list_dashboard_events
+Backend queue
+enqueue_fhir_message, publish_message, normalize_fhir_payload
+Worker config/db
+Settings, Base, init_db, get_session
+Worker queue
+get_connection, consume_hl7_messages, handle_message
+Worker job
+run, process_hl7_message, process_fhir_message
+Worker services
+split_components, hl7_date_to_fhir, parse_hl7_message, parse_message_type, build_patient_identifier, build_human_name, build_address, build_telecom, convert_hl7_to_fhir_patient, convert_hl7_adt_to_fhir_bundle, configured_auto_submit_endpoints, build_fhir_url, parse_fhir_response_body, duplicate_resource_id_from_outcome, result_from_response, auto_submit_fhir_resource
+Frontend
+compactId, displayProcessingStatus, ensureHapiSelected, loadEndpoints, App, fetchDashboard, fetchFhirResource, addEndpoint, updateEndpoint, removeEndpoint, submitToEndpoints
+
+16. Important URLs During Development
+URL
+Use
+http://localhost:5173
+Frontend dashboard.
+http://localhost:8000/docs
+Swagger API docs. Best place to manually test routes.
+http://localhost:8000/health
+Backend health check.
+http://localhost:8000/api/patient-records
+Check backend to database read path.
+http://localhost:15672
+RabbitMQ management UI. Login guest / guest locally.
+
+17. Debugging Guide
+Symptom
+What to check
+Frontend does not load
+Run docker compose ps. Check frontend is Up and port 5173 is published.
+Frontend loads but data is empty
+Check backend logs and open /api/patient-records.
+Backend /api/health gives 404
+Use /health. The health route is not under /api.
+HL7 does not process
+Check RabbitMQ is healthy, worker is Up, and worker logs show processed message.
+FHIR submit fails
+Check endpoint URL, resourceType, resource id, and response body in submit results.
+Database errors
+Check postgres container health and DATABASE_URL.
+RabbitMQ connection errors
+Check RABBITMQ_URL and rabbitmq container health.
+Docker permission errors
+Start Docker Desktop and run commands from a terminal that can access Docker.
+
+Useful commands:
+docker compose ps
+docker compose logs -f backend
+docker compose logs -f worker
+docker compose logs -f rabbitmq
+docker compose up -d --build
+18. Production Checklist
+    • Create a real .env file. Do not use .env.example for real production secrets.
+    • Change Postgres and RabbitMQ default credentials.
+    • Do not expose database port 5432 or RabbitMQ port 5672 publicly.
+    • Put frontend and backend behind HTTPS.
+    • Build frontend static files for production instead of running Vite dev server.
+    • Decide whether FHIR_AUTO_SUBMIT_ENABLED should be true. For safety, many environments should validate first, then submit manually.
+    • Add authentication before using this with real patient data.
+    • Add audit logging and stronger error handling before using protected health information.
