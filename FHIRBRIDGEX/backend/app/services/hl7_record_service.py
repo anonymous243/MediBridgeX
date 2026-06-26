@@ -45,3 +45,9 @@ def list_hl7_records(db: Session) -> list[dict[str, Any]]:
         }
         for record in records
     ]
+
+def update_hl7_record_status(db: Session, message_id: str, status: str) -> None:
+    record = db.scalars(select(HL7Record).filter_by(message_id=message_id)).first()
+    if record:
+        record.status = status
+        db.commit()
