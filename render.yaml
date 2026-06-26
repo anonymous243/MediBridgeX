@@ -3,6 +3,7 @@ services:
   - type: web
     name: fhirbridge-backend
     env: python
+    rootDir: FHIRBRIDGEX
     buildCommand: "pip install -r backend/requirements.txt"
     startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
@@ -20,6 +21,7 @@ services:
   - type: worker
     name: fhirbridge-worker
     env: python
+    rootDir: FHIRBRIDGEX
     buildCommand: "pip install -r backend/requirements.txt"
     startCommand: "cd worker && python main.py"
     envVars:
@@ -37,7 +39,8 @@ services:
   - type: pserv
     name: rabbitmq-broker
     env: docker
-    repo: https://github.com/docker-library/rabbitmq.git # Use standard rabbitmq
+    rootDir: FHIRBRIDGEX
+    repo: https://github.com/docker-library/rabbitmq.git
     branch: master
     dockerfilePath: "3.13/alpine/Dockerfile"
     envVars:
