@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { WorkflowDiagram } from "./WorkflowDiagram";
+import { NetworkBackground } from "./NetworkBackground";
 
 /* ─────────────────────────────────────────
    Inline SVG icons (no lucide dependency)
@@ -179,12 +180,14 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden">
+      {/* Animated network background spanning the hero section */}
+      <NetworkBackground />
 
       {/* ══════════════════════════════════════
           HERO — text centered, diagram below
       ══════════════════════════════════════ */}
-      <div className="max-w-7xl mx-auto px-6 pt-14 pb-10">
-
+      <div className="max-w-7xl mx-auto px-6 pt-14 pb-10 relative z-10">
+        
         {/* ── Text block — centered ── */}
         <div className="flex flex-col items-center text-center">
 
