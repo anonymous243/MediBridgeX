@@ -9,7 +9,7 @@ import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 
 export const metadata: Metadata = {
-  title: "HL7 Message Pipeline | MediBridgeX",
+  title: "Legacy Connectors (HL7) | MediBridgeX",
   description: "Ingest, parse, and route legacy HL7 v2 messages with our high-throughput message pipeline.",
 };
 
@@ -81,7 +81,7 @@ console.log(result.data.patient.name); // "John Smith"
       <main>
       {/* Hero Section */}
       <FeatureHero
-        badge="Legacy Integration Engine"
+        badge="LEGACY CONNECTORS"
         title={
           <>
             Breathe life into <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)' }}>legacy HL7.</span>

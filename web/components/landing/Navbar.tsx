@@ -6,7 +6,30 @@ import { useState, useRef, useEffect } from "react";
 
 export function Navbar() {
   const [isProductOpen, setIsProductOpen] = useState(false);
+  const [theme, setTheme] = useState("light");
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      setTheme("dark");
+      document.documentElement.classList.add('dark');
+    } else {
+      setTheme("light");
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+      document.documentElement.classList.add('dark');
+      localStorage.theme = 'dark';
+    } else {
+      setTheme("light");
+      document.documentElement.classList.remove('dark');
+      localStorage.theme = 'light';
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -126,38 +149,29 @@ export function Navbar() {
 
         {/* ── Right side ── */}
         <div className="flex items-center gap-4">
-          {/* Sun/theme icon */}
-          <button className="p-1.5 rounded-full hover:bg-gray-100 transition-colors">
-            <svg
-              className="w-5 h-5 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <circle cx="12" cy="12" r="4" strokeWidth={2} />
-              <path
-                strokeLinecap="round"
-                strokeWidth={2}
-                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
-              />
-            </svg>
+          {/* Sun/Moon theme icon */}
+          <button 
+            onClick={toggleTheme}
+            className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            {theme === "light" ? (
+              <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <circle cx="12" cy="12" r="4" strokeWidth={2} />
+                <path strokeLinecap="round" strokeWidth={2} d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+              </svg>
+            )}
           </button>
 
           <Link
             href="/auth/sign-in"
-            className="text-sm font-bold text-slate-700 transition hover:text-slate-950"
+            className="text-sm font-bold text-slate-700 dark:text-slate-300 transition hover:text-slate-950 dark:hover:text-white"
           >
             Sign In
-          </Link>
-
-          <Link
-            href="/auth/sign-up"
-            className="inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            style={{
-              background: "linear-gradient(135deg, #ec4899 0%, #a855f7 100%)",
-            }}
-          >
-            Request Early Access
           </Link>
         </div>
       </div>
