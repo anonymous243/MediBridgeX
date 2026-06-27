@@ -286,7 +286,7 @@ export function Hero() {
       {/* ══════════════════════════════════════
           HOW IT WORKS + WAITLIST
       ══════════════════════════════════════ */}
-      <div className="max-w-5xl mx-auto px-6 py-20">
+      <div className="max-w-5xl mx-auto px-6 pt-20 pb-4">
         <div className="flex flex-col gap-6 items-stretch">
 
           {/* How it works */}
@@ -339,14 +339,14 @@ export function Hero() {
       {/* ══════════════════════════════════════
           BOTTOM TRUST BAR
       ══════════════════════════════════════ */}
-      <div className="border-t border-gray-100 py-6">
+      <div className="pb-16 pt-2">
         <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-3">
-          <p className="text-sm text-gray-400 font-medium">Built for the future of healthcare</p>
+          <p className="text-sm text-gray-500 font-medium">Built for the future of healthcare</p>
           <div className="flex items-center gap-10">
             {trustFooter.map(({ Icon, label }) => (
-              <div key={label} className="flex items-center gap-1.5 text-gray-400">
+              <div key={label} className="flex items-center gap-1.5 text-gray-600">
                 <Icon className="w-4 h-4" />
-                <span className="text-xs font-medium">{label}</span>
+                <span className="text-xs font-semibold">{label}</span>
               </div>
             ))}
           </div>
