@@ -222,14 +222,19 @@ export function Hero() {
           </p>
 
           {/* CTA buttons */}
-          <div className="flex items-center gap-3 mb-10">
+          <div className="flex items-center gap-4 mb-10">
+            <Link 
+              href="/auth/sign-up" 
+              className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 shadow-md shadow-pink-500/20"
+              style={{ background: "linear-gradient(135deg, #ec4899 0%, #a855f7 100%)" }}
+            >
+              Get Started
+              <IconArrowRight className="w-4 h-4" />
+            </Link>
 
             <Link href="/docs" className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-gray-700 border border-gray-300 bg-white hover:bg-gray-50 transition-colors">
               Explore Docs
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
+              <IconCode className="w-4 h-4" />
             </Link>
           </div>
 
