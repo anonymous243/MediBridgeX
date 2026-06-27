@@ -13,7 +13,7 @@ const SECURITY_HEADERS = [
       "font-src 'self' https://fonts.gstatic.com data:",
       "img-src 'self' data: blob: https:",
       "connect-src 'self' http://localhost:8000 https://*.upstash.io wss: ws:",
-      "frame-ancestors 'none'",
+      "frame-ancestors 'self'",
       "form-action 'self'",
       "base-uri 'self'",
       "object-src 'none'",
@@ -26,9 +26,9 @@ const SECURITY_HEADERS = [
     value: 'max-age=63072000; includeSubDomains; preload',
   },
   {
-    // Prevents clickjacking attacks (embedding in iframes)
+    // Prevents clickjacking attacks (embedding in external iframes)
     key: 'X-Frame-Options',
-    value: 'DENY',
+    value: 'SAMEORIGIN',
   },
   {
     // Prevents MIME-type sniffing attacks
