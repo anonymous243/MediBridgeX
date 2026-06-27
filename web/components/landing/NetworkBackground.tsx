@@ -12,9 +12,9 @@ interface Node {
 }
 
 const COLORS = ["#ec4899", "#a855f7", "#14b8a6"]; // Pink, Purple, Teal
-const NUM_NODES = 50; // Adjust for density
-const CONNECTION_DISTANCE = 150;
-const NODE_SPEED = 0.3;
+const NUM_NODES = 70; 
+const CONNECTION_DISTANCE = 200;
+const NODE_SPEED = 0.4;
 
 export function NetworkBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -39,7 +39,7 @@ export function NetworkBackground() {
           y: Math.random() * height,
           vx: (Math.random() - 0.5) * NODE_SPEED,
           vy: (Math.random() - 0.5) * NODE_SPEED,
-          radius: Math.random() * 2 + 1,
+          radius: Math.random() * 3 + 2,
           color: COLORS[Math.floor(Math.random() * COLORS.length)],
         });
       }
@@ -100,8 +100,8 @@ export function NetworkBackground() {
             // Create a gradient line between the two nodes
             const gradient = ctx.createLinearGradient(node.x, node.y, other.x, other.y);
             // Convert hex to rgba for opacity support
-            const color1 = hexToRgba(node.color, opacity * 0.3);
-            const color2 = hexToRgba(other.color, opacity * 0.3);
+            const color1 = hexToRgba(node.color, opacity * 0.8);
+            const color2 = hexToRgba(other.color, opacity * 0.8);
             
             gradient.addColorStop(0, color1);
             gradient.addColorStop(1, color2);
@@ -110,7 +110,7 @@ export function NetworkBackground() {
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(other.x, other.y);
             ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 1.5;
             ctx.stroke();
           }
         }
@@ -145,12 +145,7 @@ export function NetworkBackground() {
       {/* The canvas itself */}
       <canvas
         ref={canvasRef}
-        className="block w-full h-full opacity-60"
-        style={{
-          // Fade out the canvas toward the bottom so it blends into the white background below
-          maskImage: "linear-gradient(to bottom, black 30%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 30%, transparent 100%)",
-        }}
+        className="block w-full h-full opacity-100"
       />
     </div>
   );
