@@ -159,7 +159,27 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #fdf2f8 0%, #faf5ff 50%, #f0fdfa 100%)",
+      }}
+    >
+      {/* ── Decorative soft blobs ── */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute -top-24 -left-24 w-[500px] h-[500px] rounded-full opacity-50 blur-[80px]"
+          style={{ background: "radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 70%)" }}
+        />
+        <div
+          className="absolute -top-10 -right-24 w-[400px] h-[400px] rounded-full opacity-40 blur-[70px]"
+          style={{ background: "radial-gradient(circle, rgba(20,184,166,0.2) 0%, transparent 70%)" }}
+        />
+        <div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[250px] rounded-full opacity-30 blur-[60px]"
+          style={{ background: "radial-gradient(ellipse, rgba(168,85,247,0.15) 0%, transparent 70%)" }}
+        />
+      </div>
 
       {/* ══════════════════════════════════════
           HERO — text centered, diagram below
