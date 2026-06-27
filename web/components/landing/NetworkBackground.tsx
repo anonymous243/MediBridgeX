@@ -46,20 +46,29 @@ export function NetworkBackground() {
     };
 
     const resize = () => {
-      // Get the parent element's dimensions
       const parent = canvas.parentElement;
       if (parent) {
-        width = parent.clientWidth;
-        height = parent.clientHeight;
+        const rect = parent.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+        
+        width = rect.width;
+        height = rect.height;
         canvas.width = width;
         canvas.height = height;
-        initNodes(); // Reinitialize nodes to spread them across the new size
+        initNodes(); 
       }
     };
 
-    // Initial sizing
+    const resizeObserver = new ResizeObserver(() => {
+      resize();
+    });
+
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
+    
+    // Initial call
     resize();
-    window.addEventListener("resize", resize);
 
     const draw = () => {
       // Clear canvas
@@ -126,7 +135,7 @@ export function NetworkBackground() {
     draw();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      resizeObserver.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
