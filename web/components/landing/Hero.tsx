@@ -239,7 +239,7 @@ export function Hero() {
           </div>
 
           {/* Trust badges */}
-          <div className="flex items-center gap-8 mb-14">
+          <div className="flex items-center gap-8 mb-8">
             {trustBadges.map(({ Icon, title, sub }) => (
               <div key={title} className="flex items-center gap-2">
                 <Icon className="w-5 h-5 flex-shrink-0" style={{ color: "#ec4899" } as React.CSSProperties} />
@@ -261,7 +261,7 @@ export function Hero() {
       {/* ══════════════════════════════════════
           FEATURES STRIP
       ══════════════════════════════════════ */}
-      <div className="border-t border-b border-gray-100 bg-white/30 backdrop-blur-sm py-12">
+      <div className="border-t border-b border-gray-100 bg-white/30 backdrop-blur-sm py-8">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-center text-[15px] font-semibold text-gray-800 mb-8">
             Everything you need for seamless healthcare data interoperability
@@ -291,7 +291,7 @@ export function Hero() {
       {/* ══════════════════════════════════════
           HOW IT WORKS + WAITLIST
       ══════════════════════════════════════ */}
-      <div className="max-w-5xl mx-auto px-6 pt-20 pb-4">
+      <div className="max-w-5xl mx-auto px-6 pt-10 pb-4">
         <div className="flex flex-col gap-6 items-stretch">
 
           {/* How it works */}
