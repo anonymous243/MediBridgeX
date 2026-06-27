@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { WorkflowDiagram } from "./WorkflowDiagram";
-import { NetworkBackground } from "./NetworkBackground";
 
 /* ─────────────────────────────────────────
    Inline SVG icons (no lucide dependency)
@@ -75,23 +74,6 @@ function IconMonitor({ className, style }: IconProps) {
     </svg>
   );
 }
-function IconLock({ className, style }: IconProps) {
-  return (
-    <svg className={className} style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <rect x="5" y="11" width="14" height="10" rx="2" strokeWidth={1.8} />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
-        d="M8 11V7a4 4 0 018 0v4" />
-    </svg>
-  );
-}
-function IconMail({ className, style }: IconProps) {
-  return (
-    <svg className={className} style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
-        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-  );
-}
 function IconCheck({ className, style }: IconProps) {
   return (
     <svg className={className} style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -114,38 +96,38 @@ const features = [
     Icon: IconHL7,
     title: "HL7 Processing",
     desc: "Robust parsing and validation of HL7 v2 messages.",
-    iconBg: "#fdf2f8",
-    iconColor: "#ec4899",
+    iconBg: "rgba(236, 72, 153, 0.15)", // pink glow
+    iconColor: "#f472b6", // lighter pink
   },
   {
     Icon: IconExchange,
     title: "FHIR Conversion",
     desc: "Intelligent mapping to FHIR R4 resources and bundles.",
-    iconBg: "#eff6ff",
-    iconColor: "#3b82f6",
+    iconBg: "rgba(59, 130, 246, 0.15)", // blue glow
+    iconColor: "#60a5fa", // lighter blue
   },
   {
     Icon: IconCloud,
     title: "Integration APIs",
     desc: "RESTful APIs and webhooks for modern integrations.",
-    iconBg: "#faf5ff",
-    iconColor: "#a855f7",
+    iconBg: "rgba(168, 85, 247, 0.15)", // purple glow
+    iconColor: "#c084fc", // lighter purple
   },
   {
     Icon: IconMonitor,
     title: "Monitoring & Alerts",
     desc: "Real-time monitoring, error tracking and smart alerts.",
-    iconBg: "#f0fdfa",
-    iconColor: "#14b8a6",
+    iconBg: "rgba(20, 184, 166, 0.15)", // teal glow
+    iconColor: "#2dd4bf", // lighter teal
   },
 ];
 
 const workflowSteps = [
-  { label: "Healthcare\nSystems", tag: null, Icon: IconMonitor, bg: "#fdf2f8", color: "#ec4899" },
-  { label: "Message\nReceiver", tag: "HL7", Icon: IconHL7, bg: "#eff6ff", color: "#3b82f6" },
-  { label: "Data\nProcessor", tag: null, Icon: IconCode, bg: "#faf5ff", color: "#a855f7" },
-  { label: "FHIR\nConverter", tag: "FHIR", Icon: IconExchange, bg: "#f0fdfa", color: "#14b8a6" },
-  { label: "APIs &\nApplications", tag: null, Icon: IconCloud, bg: "#eef2ff", color: "#6366f1" },
+  { label: "Healthcare\nSystems", tag: null, Icon: IconMonitor, color: "#f472b6" },
+  { label: "Message\nReceiver", tag: "HL7", Icon: IconHL7, color: "#60a5fa" },
+  { label: "Data\nProcessor", tag: null, Icon: IconCode, color: "#c084fc" },
+  { label: "FHIR\nConverter", tag: "FHIR", Icon: IconExchange, color: "#2dd4bf" },
+  { label: "APIs &\nApplications", tag: null, Icon: IconCloud, color: "#818cf8" },
 ];
 
 const trustFooter = [
@@ -159,131 +141,120 @@ const trustFooter = [
    Component
 ───────────────────────────────────────── */
 export function Hero() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes("@")) return;
-
-    setStatus("loading");
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setStatus("success");
-    setEmail("");
-  };
-
   return (
-    <section className="relative overflow-hidden">
-      {/* Animated network background spanning the hero section */}
-      <NetworkBackground />
+    <section className="relative overflow-hidden bg-[#030712]">
+      {/* ── Immersive Glow Background ── */}
+      <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[120px] opacity-30 pointer-events-none mix-blend-screen"
+           style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.8) 0%, rgba(236,72,153,0.5) 40%, transparent 70%)' }}>
+      </div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full blur-[100px] opacity-20 pointer-events-none mix-blend-screen"
+           style={{ background: 'radial-gradient(circle, rgba(20,184,166,0.6) 0%, rgba(59,130,246,0.3) 50%, transparent 70%)' }}>
+      </div>
 
-      {/* ══════════════════════════════════════
-          HERO — text centered, diagram below
-      ══════════════════════════════════════ */}
-      <div className="max-w-7xl mx-auto px-6 pt-14 pb-10 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 pt-20 pb-16 relative z-10">
         
         {/* ── Text block — centered ── */}
         <div className="flex flex-col items-center text-center">
 
           {/* Badge */}
           <div
-            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-7 border"
-            style={{ borderColor: "#fbcfe8", background: "#fdf2f8" }}
+            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-7 border border-slate-700/50 bg-slate-800/40 backdrop-blur-md"
           >
             <span
-              className="w-3.5 h-3.5 rounded-full flex-shrink-0"
-              style={{ background: "linear-gradient(135deg,#ec4899,#a855f7)" }}
+              className="w-3 h-3 rounded-full flex-shrink-0 animate-pulse"
+              style={{ background: "linear-gradient(135deg,#f472b6,#c084fc)", boxShadow: "0 0 10px rgba(236,72,153,0.5)" }}
             />
             <span
-              className="text-[10px] font-bold tracking-widest uppercase"
-              style={{ color: "#db2777" }}
+              className="text-[10px] font-bold tracking-widest uppercase text-slate-300"
             >
               FHIR-Native Interoperability Platform
             </span>
           </div>
 
           {/* Headline */}
-          <h1 className="text-[52px] font-extrabold leading-[1.1] text-gray-900 mb-4">
+          <h1 className="text-[52px] font-extrabold leading-[1.1] text-white mb-6 tracking-tight">
             Modern Healthcare
             <br />
             Interoperability
             <br />
-            <span style={{ color: "#ec4899" }}>Simplified.</span>
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(to right, #f472b6, #c084fc)" }}>Simplified.</span>
           </h1>
 
           {/* Sub */}
-          <p className="text-base text-gray-500 leading-relaxed mb-8 max-w-[480px]">
+          <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-[540px]">
             MediBridgeX connects legacy healthcare systems with modern
             applications using intelligent HL7 processing, FHIR conversion,
             and secure API infrastructure.
           </p>
 
           {/* CTA buttons */}
-          <div className="flex items-center gap-4 mb-10">
+          <div className="flex items-center gap-4 mb-14">
             <Link 
               href="/auth/sign-up" 
-              className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 shadow-md shadow-pink-500/20"
+              className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white transition-all hover:opacity-90 shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)]"
               style={{ background: "linear-gradient(135deg, #ec4899 0%, #a855f7 100%)" }}
             >
               Get Started
               <IconArrowRight className="w-4 h-4" />
             </Link>
 
-            <Link href="/docs" className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-gray-700 border border-gray-300 bg-white hover:bg-gray-50 transition-colors">
+            <Link href="/docs" className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-slate-200 border border-slate-700 bg-slate-800/50 backdrop-blur-md hover:bg-slate-700/50 transition-colors">
               Explore Docs
               <IconCode className="w-4 h-4" />
             </Link>
           </div>
 
-          {/* Trust badges */}
-          <div className="flex items-center gap-8 mb-8">
+          {/* Trust badges - Glassmorphism style */}
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-10">
             {trustBadges.map(({ Icon, title, sub }) => (
-              <div key={title} className="flex items-center gap-2">
-                <Icon className="w-5 h-5 flex-shrink-0" style={{ color: "#ec4899" } as React.CSSProperties} />
+              <div key={title} className="flex items-center gap-3 bg-slate-800/30 border border-slate-700/50 rounded-2xl px-5 py-3 backdrop-blur-sm">
+                <Icon className="w-6 h-6 flex-shrink-0" style={{ color: "#f472b6" } as React.CSSProperties} />
                 <div className="text-left">
-                  <p className="text-xs font-semibold text-gray-900">{title}</p>
-                  <p className="text-xs text-gray-400">{sub}</p>
+                  <p className="text-sm font-bold text-slate-200">{title}</p>
+                  <p className="text-[11px] text-slate-400 font-medium">{sub}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* ── Diagram — below text, centered ── */}
-          <div className="w-full flex justify-center">
-            <WorkflowDiagram />
+          <div className="w-full flex justify-center mt-4">
+            <div className="bg-slate-900/60 p-4 rounded-3xl border border-slate-700/50 backdrop-blur-xl shadow-2xl">
+              <WorkflowDiagram />
+            </div>
           </div>
         </div>
       </div>
 
       {/* ══════════════════════════════════════
-          FEATURES STRIP
+          FEATURES STRIP - Dark Glass
       ══════════════════════════════════════ */}
-      <div className="border-t border-b border-gray-100 bg-white/30 backdrop-blur-sm py-8">
+      <div className="border-t border-b border-slate-800/60 bg-slate-900/40 backdrop-blur-md py-10">
         <div className="max-w-7xl mx-auto px-6">
-          <p className="text-center text-[15px] font-semibold text-gray-800 mb-8">
+          <p className="text-center text-[15px] font-semibold text-slate-400 mb-10">
             Everything you need for seamless healthcare data interoperability
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {features.map(({ Icon, title, desc, iconBg, iconColor }) => (
-              <div key={title} className="flex items-start gap-3">
+              <div key={title} className="flex flex-col items-center text-center gap-3 group">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: iconBg }}
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                  style={{ background: iconBg, border: `1px solid ${iconBg.replace('0.15', '0.3')}` }}
                 >
                   <Icon
-                    className="w-5 h-5"
+                    className="w-6 h-6"
                     style={{ color: iconColor } as React.CSSProperties}
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900 mb-0.5">{title}</p>
-                  <p className="text-xs text-gray-500 leading-snug">{desc}</p>
+                  <p className="text-sm font-bold text-slate-200 mb-1">{title}</p>
+                  <p className="text-xs text-slate-400 leading-relaxed max-w-[200px]">{desc}</p>
                 </div>
               </div>
             ))}
@@ -292,47 +263,50 @@ export function Hero() {
       </div>
 
       {/* ══════════════════════════════════════
-          HOW IT WORKS + WAITLIST
+          HOW IT WORKS
       ══════════════════════════════════════ */}
-      <div className="max-w-5xl mx-auto px-6 pt-10 pb-4">
+      <div className="max-w-5xl mx-auto px-6 pt-16 pb-8">
         <div className="flex flex-col gap-6 items-stretch">
 
-          {/* How it works */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-3xl border border-gray-100 shadow-sm p-10 flex flex-col items-center">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          {/* How it works - Dark Glass Card */}
+          <div className="bg-slate-900/50 backdrop-blur-xl rounded-[2rem] border border-slate-700/50 shadow-2xl p-10 flex flex-col items-center relative overflow-hidden">
+            {/* Subtle inner glow */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-800/20 to-transparent pointer-events-none"></div>
+
+            <div className="text-center mb-12 relative z-10">
+              <h2 className="text-3xl font-extrabold text-white mb-3">
                 How MediBridgeX Works
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-slate-400 max-w-[400px]">
                 A seamless pipeline from legacy systems to modern FHIR applications
               </p>
             </div>
             
-            <div className="flex items-center justify-center gap-3 md:gap-5 flex-wrap w-full">
-              {workflowSteps.map(({ label, tag, Icon, bg, color }, idx) => (
+            <div className="flex items-center justify-center gap-3 md:gap-5 flex-wrap w-full relative z-10">
+              {workflowSteps.map(({ label, tag, Icon, color }, idx) => (
                 <div key={label} className="flex items-center gap-3 md:gap-5">
                   <div
-                    className="flex flex-col items-center justify-center gap-2.5 rounded-2xl p-4 w-[120px] min-h-[120px] shadow-sm transition-transform hover:-translate-y-1"
-                    style={{ background: bg }}
+                    className="flex flex-col items-center justify-center gap-3 rounded-2xl p-5 w-[130px] min-h-[130px] bg-slate-800/80 border border-slate-700/60 shadow-lg transition-all hover:-translate-y-1 hover:border-slate-500/50 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]"
                   >
                     {tag && (
                       <span
-                        className="text-[10px] font-bold rounded-md px-1.5 py-0.5 mb-1"
+                        className="text-[9px] font-bold rounded px-1.5 py-0.5 uppercase tracking-wider"
                         style={{
-                          color: tag === "HL7" ? "#db2777" : "#0d9488",
-                          background: tag === "HL7" ? "#fce7f3" : "#ccfbf1",
+                          color: color,
+                          background: `${color}1A`, // 10% opacity
+                          border: `1px solid ${color}33`,
                         }}
                       >
                         {tag}
                       </span>
                     )}
-                    <Icon className="w-8 h-8" style={{ color } as React.CSSProperties} />
-                    <span className="text-[11px] font-medium text-gray-700 text-center leading-tight whitespace-pre-line mt-1">
+                    <Icon className="w-9 h-9 drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]" style={{ color } as React.CSSProperties} />
+                    <span className="text-[12px] font-semibold text-slate-300 text-center leading-tight whitespace-pre-line mt-1">
                       {label}
                     </span>
                   </div>
                   {idx < workflowSteps.length - 1 && (
-                    <svg className="w-5 h-5 text-gray-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-slate-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                     </svg>
                   )}
@@ -347,14 +321,14 @@ export function Hero() {
       {/* ══════════════════════════════════════
           BOTTOM TRUST BAR
       ══════════════════════════════════════ */}
-      <div className="pb-16 pt-2">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-3">
-          <p className="text-sm text-gray-500 font-medium">Built for the future of healthcare</p>
-          <div className="flex items-center gap-10">
+      <div className="pb-16 pt-4">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-4">
+          <p className="text-sm text-slate-500 font-semibold tracking-wide uppercase">Built for the future of healthcare</p>
+          <div className="flex flex-wrap justify-center items-center gap-10">
             {trustFooter.map(({ Icon, label }) => (
-              <div key={label} className="flex items-center gap-1.5 text-gray-600">
+              <div key={label} className="flex items-center gap-2 text-slate-400">
                 <Icon className="w-4 h-4" />
-                <span className="text-xs font-semibold">{label}</span>
+                <span className="text-xs font-bold uppercase tracking-wider">{label}</span>
               </div>
             ))}
           </div>
