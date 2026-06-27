@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import "./styles.css";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "https://fhirbridge-backend.onrender.com";
 const DEFAULT_ENDPOINTS = [
   {
     id: "hapi-r4",
@@ -226,11 +226,11 @@ function App() {
             <LayoutDashboard size={18} />
             Dashboard
           </a>
-          <a className="nav-item" href="http://127.0.0.1:8000/docs">
+          <a className="nav-item" href={`${API_BASE_URL}/docs`} target="_blank" rel="noreferrer">
             <Activity size={18} />
             API Docs
           </a>
-          <a className="nav-item" href="http://127.0.0.1:15672">
+          <a className="nav-item" href="https://www.rabbitmq.com/" target="_blank" rel="noreferrer">
             <Database size={18} />
             RabbitMQ
           </a>
