@@ -286,24 +286,30 @@ export function Hero() {
       {/* ══════════════════════════════════════
           HOW IT WORKS + WAITLIST
       ══════════════════════════════════════ */}
-      <div className="max-w-3xl mx-auto px-6 py-12">
+      <div className="max-w-5xl mx-auto px-6 py-20">
         <div className="flex flex-col gap-6 items-stretch">
 
           {/* How it works */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-sm p-6">
-            <p className="text-sm font-bold text-gray-900 mb-5">
-              How MediBridgeX Works
-            </p>
-            <div className="flex items-center gap-2 flex-wrap">
+          <div className="bg-white/60 backdrop-blur-sm rounded-3xl border border-gray-100 shadow-sm p-10 flex flex-col items-center">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                How MediBridgeX Works
+              </h2>
+              <p className="text-sm text-gray-500">
+                A seamless pipeline from legacy systems to modern FHIR applications
+              </p>
+            </div>
+            
+            <div className="flex items-center justify-center gap-3 md:gap-5 flex-wrap w-full">
               {workflowSteps.map(({ label, tag, Icon, bg, color }, idx) => (
-                <div key={label} className="flex items-center gap-2">
+                <div key={label} className="flex items-center gap-3 md:gap-5">
                   <div
-                    className="flex flex-col items-center justify-center gap-1.5 rounded-xl px-2.5 py-2.5 w-[72px] min-h-[72px]"
+                    className="flex flex-col items-center justify-center gap-2.5 rounded-2xl p-4 w-[120px] min-h-[120px] shadow-sm transition-transform hover:-translate-y-1"
                     style={{ background: bg }}
                   >
                     {tag && (
                       <span
-                        className="text-[8px] font-bold rounded px-1 py-0.5 mb-0.5"
+                        className="text-[10px] font-bold rounded-md px-1.5 py-0.5 mb-1"
                         style={{
                           color: tag === "HL7" ? "#db2777" : "#0d9488",
                           background: tag === "HL7" ? "#fce7f3" : "#ccfbf1",
@@ -312,21 +318,20 @@ export function Hero() {
                         {tag}
                       </span>
                     )}
-                    <Icon className="w-5 h-5" style={{ color } as React.CSSProperties} />
-                    <span className="text-[8px] text-gray-600 text-center leading-tight whitespace-pre-line">
+                    <Icon className="w-8 h-8" style={{ color } as React.CSSProperties} />
+                    <span className="text-[11px] font-medium text-gray-700 text-center leading-tight whitespace-pre-line mt-1">
                       {label}
                     </span>
                   </div>
                   {idx < workflowSteps.length - 1 && (
-                    <svg className="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg className="w-5 h-5 text-gray-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                     </svg>
                   )}
                 </div>
               ))}
             </div>
           </div>
-
 
         </div>
       </div>
