@@ -169,7 +169,7 @@ export function Navbar() {
 
           <Link
             href="/auth/sign-in"
-            className="text-sm font-bold text-slate-700 dark:text-slate-300 transition hover:text-slate-950 dark:hover:text-white"
+            className="text-sm font-semibold text-gray-900 dark:text-white transition-all hover:text-blue-600 dark:hover:text-blue-400 px-4 py-2 rounded-full hover:bg-gray-50 dark:hover:bg-gray-800 border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
           >
             Sign In
           </Link>
