@@ -14,7 +14,7 @@ export default function HmsProductPage() {
     return (
         <div style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
             <iframe 
-                src="http://localhost:5000" 
+                src="https://hms-system.onrender.com" 
                 style={{ width: '100%', height: '100%', border: 'none' }} 
                 title="HMS Engine"
             />
