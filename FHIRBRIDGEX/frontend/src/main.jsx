@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import "./styles.css";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "https://fhirbridge-backend.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "https://medibridgex.onrender.com";
 const DEFAULT_ENDPOINTS = [
   {
     id: "hapi-r4",
