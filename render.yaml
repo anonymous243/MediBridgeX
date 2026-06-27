@@ -18,3 +18,11 @@ databases:
     databaseName: fhirbridge
     user: fhirbridge
     plan: free
+
+  # 3. HMS Frontend/Backend (Flask App)
+  - type: web
+    name: hms-system
+    env: python
+    rootDir: hms
+    buildCommand: "pip install flask gunicorn"
+    startCommand: "gunicorn app:app --bind 0.0.0.0:$PORT"
