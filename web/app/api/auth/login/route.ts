@@ -69,6 +69,47 @@ export async function POST(req: NextRequest) {
       return response;
     }
 
+    // ── Tester Credentials Override ───────────────────────────
+    const testers: Record<string, { email: string; name: string }> = {
+      'tester1@medibridgex.com': { email: 'tester1@medibridgex.com', name: 'Tester One' },
+      'tester2@medibridgex.com': { email: 'tester2@medibridgex.com', name: 'Tester Two' },
+      'tester3@medibridgex.com': { email: 'tester3@medibridgex.com', name: 'Tester Three' },
+    };
+
+    if (testers[email.toLowerCase()] && password === 'Tester@123') {
+      const mockToken = `mock_jwt_tester_${Buffer.from(email).toString('base64')}`;
+      const role: UserRole = 'admin';
+      const user = {
+        id: `u_${email.split('@')[0]}`,
+        email: testers[email.toLowerCase()].email,
+        name: testers[email.toLowerCase()].name,
+        role,
+        organizationId: 'TEST_ORG',
+        organizationName: 'MediBridgeX QA',
+        permissions: MOCK_PERMISSIONS[role],
+        onboardingCompleted: true,
+        workspaceSlug: 'qa-testing',
+        workspace: {
+          slug: 'qa-testing',
+          region: 'US East (N. Virginia)',
+          organizationType: 'QA Validation',
+          hospitalSize: 'N/A',
+          fhirVersion: 'FHIR R4',
+          provisionedAt: new Date().toISOString(),
+        },
+      };
+
+      const response = NextResponse.json({ user, token: mockToken }, { status: 200 });
+      response.cookies.set(AUTH_COOKIE_NAME, mockToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: COOKIE_MAX_AGE,
+        path: '/',
+      });
+      return response;
+    }
+
     // ── Mock Mode ───────────────────────────────────────────
     if (IS_MOCK) {
       await new Promise(r => setTimeout(r, 800)); // simulate network delay
