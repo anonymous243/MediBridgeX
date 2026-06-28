@@ -32,7 +32,7 @@ export default function SignUpPage() {
   // If already logged in and onboarding done, redirect
   React.useEffect(() => {
     if (user?.onboardingCompleted) {
-      router.replace(ROUTES.DASHBOARD);
+      router.replace("/portal");
     }
   }, [user, router]);
 

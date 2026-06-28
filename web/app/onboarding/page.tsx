@@ -83,7 +83,7 @@ export default function OnboardingPage() {
   // Guard: if authenticated with completed onboarding, skip to dashboard
   useEffect(() => {
     if (authUser?.onboardingCompleted) {
-      router.replace(ROUTES.DASHBOARD);
+      router.replace("/portal");
     }
   }, [authUser, router]);
 
@@ -154,7 +154,7 @@ export default function OnboardingPage() {
         organizationName={organization.name}
         organizationSlug={organization.slug || organization.name.toLowerCase().replace(/\s+/g, '-')}
         region={organization.region}
-        onComplete={() => router.push(ROUTES.DASHBOARD)}
+        onComplete={() => router.push("/portal")}
       />
     );
   }

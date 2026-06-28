@@ -31,7 +31,7 @@ function VerifyOtpContent() {
   // If already logged in and onboarding done, redirect
   useEffect(() => {
     if (user?.onboardingCompleted) {
-      router.replace(ROUTES.DASHBOARD);
+      router.replace("/portal");
     }
   }, [user, router]);
 

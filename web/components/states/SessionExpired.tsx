@@ -11,7 +11,7 @@ export function SessionExpired() {
     // In our mock, logout will reset state. 
     // In a real app, this would redirect to /auth/login
     await logout();
-    window.location.href = '/dashboard'; 
+    window.location.href = '/portal';
   };
 
   return (
