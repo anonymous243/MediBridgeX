@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { HealthcareNetwork } from "./HealthcareNetwork";
 import { StorytellingJourney } from "./StorytellingJourney";
-import { AmbientBackground } from "./AmbientBackground";
 
 /* ─── Floating Healthcare Artifacts ─── */
 function FloatingArtifacts() {
@@ -165,8 +164,8 @@ function CapabilityCard({ cap, index }: { cap: typeof capabilities[0]; index: nu
 export function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroOpacity = useTransform(scrollYProgress, [0.95, 0.995], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0.95, 0.995], [1, 0.98]);
+  const heroOpacity = useTransform(scrollYProgress, [0.5, 0.95], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0.5, 0.95], [1, 0.96]);
 
   const capRef = useRef<HTMLDivElement>(null);
   const capInView = useInView(capRef, { once: true, margin: "-80px" });
@@ -184,7 +183,6 @@ export function Hero() {
           background: "linear-gradient(180deg, #f8fafc 0%, #ffffff 40%, #fdf2f8 70%, #f0fdfa 100%)",
         }}
       >
-        <AmbientBackground />
         {/* Soft background blobs */}
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
