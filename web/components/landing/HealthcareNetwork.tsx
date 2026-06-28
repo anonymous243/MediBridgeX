@@ -272,14 +272,14 @@ function DataPulse({
 }) {
   return (
     <motion.circle
-      r="2.5"
+      r="3.2"
       fill={color}
       filter="url(#pulseGlow)"
       initial={{ cx: x1, cy: y1, opacity: 0 }}
       animate={{
         cx: [x1, x2],
         cy: [y1, y2],
-        opacity: [0, 1, 1, 0],
+        opacity: [0, 0.95, 0.95, 0],
       }}
       transition={{
         duration: 3,
@@ -330,7 +330,7 @@ export function HealthcareNetwork() {
         {/* Soft radial background overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(244,244,245,0.4)_0%,transparent_80%)] pointer-events-none" />
 
-        <svg viewBox="6 4 88 90" className="w-full h-full max-h-[480px] z-10" style={{ filter: "drop-shadow(0 4px 15px rgba(0,0,0,0.02))" }}>
+        <svg viewBox="4 0 92 100" className="w-full h-full max-h-[480px] z-10" style={{ filter: "drop-shadow(0 4px 15px rgba(0,0,0,0.02))" }}>
           <defs>
             <filter id="pulseGlow" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="1.8" result="blur" />
@@ -347,9 +347,9 @@ export function HealthcareNetwork() {
               </feMerge>
             </filter>
             <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ec4899" stopOpacity="0.4" />
-              <stop offset="50%" stopColor="#a855f7" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#14b8a6" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="#ec4899" stopOpacity="0.95" />
+              <stop offset="50%" stopColor="#a855f7" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#14b8a6" stopOpacity="0.95" />
             </linearGradient>
           </defs>
 
@@ -366,10 +366,10 @@ export function HealthcareNetwork() {
                   y1={node.y}
                   x2={target.x}
                   y2={target.y}
-                  stroke={active ? "url(#neonGrad)" : "#f1f5f9"}
-                  strokeWidth={active ? 0.6 : 0.25}
-                  strokeDasharray={active ? "none" : "1.5,1.5"}
-                  animate={{ opacity: active ? 1 : 0.35 }}
+                  stroke={active ? "url(#neonGrad)" : "#cbd5e1"}
+                  strokeWidth={active ? 1.0 : 0.45}
+                  strokeDasharray={active ? "none" : "2,2"}
+                  animate={{ opacity: active ? 1 : 0.45 }}
                   transition={{ duration: 0.3 }}
                 />
               );
@@ -400,7 +400,7 @@ export function HealthcareNetwork() {
             const active = isConnected(node.id);
             const isSelected = selectedId === node.id;
             const isCenter = node.id === "mbrx";
-            const nodeSize = isCenter ? 7.6 : 5.0;
+            const nodeSize = isCenter ? 9.2 : 6.2;
 
             return (
               <g
@@ -414,15 +414,15 @@ export function HealthcareNetwork() {
                 <motion.circle
                   cx={node.x}
                   cy={node.y}
-                  r={nodeSize + 2}
+                  r={nodeSize + 2.5}
                   fill="none"
                   stroke={node.color}
-                  strokeWidth={0.25}
-                  strokeDasharray="2,1.5"
+                  strokeWidth={0.3}
+                  strokeDasharray="2.5,2"
                   animate={{
                     rotate: isSelected ? 360 : 0,
-                    opacity: active ? 0.75 : 0.15,
-                    scale: active ? 1.05 : 0.95,
+                    opacity: active ? 0.8 : 0.2,
+                    scale: active ? 1.06 : 0.94,
                   }}
                   transition={{
                     rotate: { repeat: Infinity, duration: 12, ease: "linear" },
@@ -437,11 +437,11 @@ export function HealthcareNetwork() {
                   cy={node.y}
                   r={nodeSize}
                   fill="white"
-                  stroke={isSelected ? node.color : active ? `${node.color}cc` : "#e2e8f0"}
-                  strokeWidth={isSelected ? 0.8 : 0.4}
+                  stroke={isSelected ? node.color : active ? `${node.color}cc` : "#cbd5e1"}
+                  strokeWidth={isSelected ? 1.0 : 0.5}
                   filter="url(#nodeGlow)"
                   animate={{
-                    opacity: active ? 1 : 0.45,
+                    opacity: active ? 1 : 0.5,
                     scale: isSelected ? 1.12 : hoveredNode === node.id ? 1.06 : 1,
                   }}
                   transition={{ duration: 0.2 }}
@@ -454,7 +454,7 @@ export function HealthcareNetwork() {
                   y={node.y + 0.4}
                   textAnchor="middle"
                   dominantBaseline="central"
-                  fontSize={isCenter ? 5.2 : 3.6}
+                  fontSize={isCenter ? 6.2 : 4.4}
                   style={{ pointerEvents: "none" }}
                 >
                   {node.icon}
@@ -463,12 +463,12 @@ export function HealthcareNetwork() {
                 {/* Node label */}
                 <motion.text
                   x={node.x}
-                  y={node.y + (isCenter ? 10.2 : 8.0)}
+                  y={node.y + (isCenter ? 12.0 : 9.5)}
                   textAnchor="middle"
-                  fontSize="2.4"
+                  fontSize="2.8"
                   fontWeight="700"
-                  fill={isSelected ? "#1e293b" : active ? "#475569" : "#94a3b8"}
-                  animate={{ opacity: active ? 1 : 0.45 }}
+                  fill={isSelected ? "#0f172a" : active ? "#334155" : "#64748b"}
+                  animate={{ opacity: active ? 1 : 0.5 }}
                   transition={{ duration: 0.2 }}
                   style={{ pointerEvents: "none" }}
                 >
