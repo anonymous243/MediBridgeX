@@ -130,46 +130,58 @@ export function Navbar() {
               </svg>
             </button>
             
-            {/* Dropdown Menu */}
-            <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[600px] bg-white border border-gray-100 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] transition-all duration-200 transform ${isSolutionsOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'}`}>
-              <div className="p-6 grid grid-cols-2 gap-8">
-                {/* Column 1: By Use Case */}
-                <div>
-                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">By Use Case</h3>
-                  <div className="flex flex-col gap-2">
-                    <Link href="/solutions/interoperability" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
-                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">Data Interoperability</p>
-                      <p className="text-xs text-gray-500 mt-1">Seamlessly exchange data across EHRs.</p>
-                    </Link>
-                    <Link href="/solutions/modernization" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
-                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">Legacy Modernization</p>
-                      <p className="text-xs text-gray-500 mt-1">Upgrade HL7 v2 infrastructure to FHIR R4.</p>
-                    </Link>
-                    <Link href="/solutions/hms" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
-                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">Hospital Operations</p>
-                      <p className="text-xs text-gray-500 mt-1">Streamline administration with HMS modules.</p>
-                    </Link>
+            {/* Dropdown Menu — single column, no headers */}
+            <div className={`absolute top-full left-0 mt-0 w-72 bg-white border border-gray-100 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] transition-all duration-200 transform ${isSolutionsOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'}`}>
+              <div className="p-2 flex flex-col gap-1">
+                <Link href="/solutions/health-systems" onClick={() => setIsSolutionsOpen(false)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                   </div>
-                </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">For Health Systems</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Enterprise pipelines and compliance.</p>
+                  </div>
+                </Link>
+                <Link href="/solutions/startups" onClick={() => setIsSolutionsOpen(false)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all">
+                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">For Digital Health Startups</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Developer-friendly APIs to launch faster.</p>
+                  </div>
+                </Link>
+                <Link href="/solutions/payers" onClick={() => setIsSolutionsOpen(false)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all">
+                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-500 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-teal-600 transition-colors">For Payers & Insurance</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Claims processing and bulk data.</p>
+                  </div>
+                </Link>
 
-                {/* Column 2: By Organization */}
-                <div>
-                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">By Organization</h3>
-                  <div className="flex flex-col gap-2">
-                    <Link href="/solutions/health-systems" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
-                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">For Health Systems</p>
-                      <p className="text-xs text-gray-500 mt-1">Enterprise data pipelines and compliance.</p>
-                    </Link>
-                    <Link href="/solutions/startups" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
-                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">For Digital Health Startups</p>
-                      <p className="text-xs text-gray-500 mt-1">Developer-friendly APIs to launch faster.</p>
-                    </Link>
-                    <Link href="/solutions/payers" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
-                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">For Payers & Insurance</p>
-                      <p className="text-xs text-gray-500 mt-1">Secure claims processing and bulk data.</p>
-                    </Link>
+                {/* Divider */}
+                <div className="h-px bg-gray-100 my-1 mx-2" />
+
+                <Link href="/services/mirth" onClick={() => setIsSolutionsOpen(false)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all">
+                  <div className="w-8 h-8 rounded-lg bg-pink-50 text-pink-500 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
                   </div>
-                </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-pink-600 transition-colors">Mirth Connect</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Managed HL7 integration engine.</p>
+                  </div>
+                </Link>
+                <Link href="/services/corepoint" onClick={() => setIsSolutionsOpen(false)} className="group flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all">
+                  <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" /></svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Corepoint</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Clinical message routing engine.</p>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
