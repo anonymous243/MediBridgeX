@@ -15,8 +15,8 @@ const footerLinks = [
   {
     title: "Services",
     links: [
-      { name: "Mirth Connect", href: "/" },
-      { name: "Corepoint", href: "/" },
+      { name: "Mirth Connect", href: "/services/mirth" },
+      { name: "Corepoint", href: "/services/corepoint" },
     ],
   },
   {
