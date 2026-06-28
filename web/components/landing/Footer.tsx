@@ -22,11 +22,11 @@ const footerLinks = [
   {
     title: "Resources",
     links: [
-      { name: "Documentation", href: "/" },
-      { name: "Developer Sandbox", href: "/auth/sign-in" },
-      { name: "API Reference", href: "/" },
-      { name: "HL7 to FHIR Guide", href: "/" },
-      { name: "System Status", href: "/", status: true },
+      { name: "Documentation", href: "/docs" },
+      { name: "Developer Sandbox", href: "/docs" },
+      { name: "API Reference", href: "/docs" },
+      { name: "HL7 to FHIR Guide", href: "/docs" },
+      { name: "System Status", href: "/docs", status: true },
     ],
   },
   {
