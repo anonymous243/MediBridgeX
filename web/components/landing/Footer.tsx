@@ -10,7 +10,6 @@ const footerLinks = [
       { name: "FHIR API Gateway", href: "/product/fhir-gateway" },
       { name: "Legacy Connectors", href: "/product/hl7" },
       { name: "Data Transformation", href: "/product/data-transformation" },
-      { name: "Security & HIPAA", href: "/" },
     ],
   },
   {
