@@ -6,6 +6,8 @@ import './globals.css';
 
 import { Toaster } from 'sonner';
 
+import { SessionTimeout } from '@/components/auth/SessionTimeout';
+
 const inter = Inter({
   subsets: ['latin'],
 });
@@ -24,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <SessionTimeout />
         {children}
 
         {/* TOAST SYSTEM */}
