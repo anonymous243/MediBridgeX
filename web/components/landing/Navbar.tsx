@@ -177,7 +177,7 @@ export function Navbar() {
           {["Resources", "Company"].map((item) => (
             <Link
               key={item}
-              href={item === "Developers" ? "/docs" : "/"}
+              href="#footer"
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-150"
             >
               {item}
