@@ -17,7 +17,7 @@ export default function PortalPage() {
             <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
                 
                 {/* FHIR Gateway */}
-                <Link href="/dashboard/fhir" className="group">
+                <a href="https://FhIR.medibridgex.com" className="group">
                     <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:border-blue-200 transition-all duration-300 h-full flex flex-col">
                         <div className="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                             <Database className="h-6 w-6" />
@@ -30,7 +30,7 @@ export default function PortalPage() {
                             Launch App <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
-                </Link>
+                </a>
 
                 {/* HL7 Processor (Coming Soon / Placeholder) */}
                 <div className="group cursor-not-allowed opacity-75">
