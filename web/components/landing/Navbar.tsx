@@ -6,12 +6,17 @@ import { useState, useRef, useEffect } from "react";
 
 export function Navbar() {
   const [isProductOpen, setIsProductOpen] = useState(false);
+  const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const solutionsDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsProductOpen(false);
+      }
+      if (solutionsDropdownRef.current && !solutionsDropdownRef.current.contains(event.target as Node)) {
+        setIsSolutionsOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -113,7 +118,63 @@ export function Navbar() {
             </div>
           </div>
 
-          {["Solutions", "Resources", "Company"].map((item) => (
+          {/* Solutions Dropdown */}
+          <div className="relative py-4" ref={solutionsDropdownRef}>
+            <button 
+              onClick={() => setIsSolutionsOpen(!isSolutionsOpen)}
+              className={`text-sm transition-colors duration-150 flex items-center gap-1 ${isSolutionsOpen ? 'text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
+            >
+              Solutions
+              <svg className={`w-3 h-3 transition-transform duration-200 ${isSolutionsOpen ? 'text-gray-600 rotate-180' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {/* Dropdown Menu */}
+            <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[600px] bg-white border border-gray-100 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] transition-all duration-200 transform ${isSolutionsOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'}`}>
+              <div className="p-6 grid grid-cols-2 gap-8">
+                {/* Column 1: By Use Case */}
+                <div>
+                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">By Use Case</h3>
+                  <div className="flex flex-col gap-2">
+                    <Link href="/solutions/interoperability" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
+                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">Data Interoperability</p>
+                      <p className="text-xs text-gray-500 mt-1">Seamlessly exchange data across EHRs.</p>
+                    </Link>
+                    <Link href="/solutions/modernization" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
+                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">Legacy Modernization</p>
+                      <p className="text-xs text-gray-500 mt-1">Upgrade HL7 v2 infrastructure to FHIR R4.</p>
+                    </Link>
+                    <Link href="/solutions/hms" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
+                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">Hospital Operations</p>
+                      <p className="text-xs text-gray-500 mt-1">Streamline administration with HMS modules.</p>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Column 2: By Organization */}
+                <div>
+                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">By Organization</h3>
+                  <div className="flex flex-col gap-2">
+                    <Link href="/solutions/health-systems" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
+                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">For Health Systems</p>
+                      <p className="text-xs text-gray-500 mt-1">Enterprise data pipelines and compliance.</p>
+                    </Link>
+                    <Link href="/solutions/startups" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
+                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">For Digital Health Startups</p>
+                      <p className="text-xs text-gray-500 mt-1">Developer-friendly APIs to launch faster.</p>
+                    </Link>
+                    <Link href="/solutions/payers" onClick={() => setIsSolutionsOpen(false)} className="group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
+                      <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">For Payers & Insurance</p>
+                      <p className="text-xs text-gray-500 mt-1">Secure claims processing and bulk data.</p>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {["Resources", "Company"].map((item) => (
             <Link
               key={item}
               href={item === "Developers" ? "/docs" : "/"}
