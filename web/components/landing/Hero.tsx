@@ -164,8 +164,8 @@ function CapabilityCard({ cap, index }: { cap: typeof capabilities[0]; index: nu
 export function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroOpacity = useTransform(scrollYProgress, [0.5, 0.95], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0.5, 0.95], [1, 0.96]);
+  const heroOpacity = useTransform(scrollYProgress, [0.65, 0.95], [1, 0.4]);
+  const heroScale = useTransform(scrollYProgress, [0.65, 0.95], [1, 0.98]);
 
   const capRef = useRef<HTMLDivElement>(null);
   const capInView = useInView(capRef, { once: true, margin: "-80px" });
