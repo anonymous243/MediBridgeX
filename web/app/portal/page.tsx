@@ -14,7 +14,7 @@ export default function PortalPage() {
                 <p className="mt-2 text-slate-500 font-medium">Select an application to launch</p>
             </div>
 
-            <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 {/* FHIR Gateway */}
                 <a href="https://FhIR.medibridgex.com" className="group">
@@ -31,22 +31,6 @@ export default function PortalPage() {
                         </div>
                     </div>
                 </a>
-
-                {/* HL7 Processor (Coming Soon / Placeholder) */}
-                <div className="group cursor-not-allowed opacity-75">
-                    <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm transition-all duration-300 h-full flex flex-col">
-                        <div className="h-12 w-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6">
-                            <Activity className="h-6 w-6" />
-                        </div>
-                        <h2 className="text-xl font-bold text-slate-900 mb-2">HL7 Processor</h2>
-                        <p className="text-sm text-slate-500 font-medium leading-relaxed mb-8 flex-grow">
-                            Access the HL7 v2.x pipeline for legacy message parsing and real-time conversion monitoring.
-                        </p>
-                        <div className="flex items-center text-sm font-bold text-slate-400">
-                            Under Construction
-                        </div>
-                    </div>
-                </div>
 
                 {/* HMS System */}
                 <div className="group cursor-not-allowed opacity-75">
