@@ -18,7 +18,6 @@ export default function FhirWorkspacePage() {
             <SectionHeader 
                 title="FHIR Interoperability" 
                 description="Monitor, validate, and route HL7 FHIR R4 resources across your infrastructure."
-                icon={Database}
             />
 
             <FhirMetrics />
